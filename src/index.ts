@@ -18,7 +18,7 @@ export class TypeScriptPlugin {
   hooks: { [key: string]: Function }
 
   constructor(serverless: Serverless.Instance, options: any) {
-     this.serverless = serverless
+    this.serverless = serverless
     this.options = options
 
     this.hooks = {
