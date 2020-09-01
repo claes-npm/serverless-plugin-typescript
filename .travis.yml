@@ -10,6 +10,7 @@ jobs:
       script:
         - yarn run lint
         - yarn run test
+        - yarn run build
       deploy:
         provider: npm
         email: "$NPM_EMAIL"
