@@ -17,7 +17,11 @@ export class TypeScriptPlugin {
   options: Serverless.Options
   hooks: { [key: string]: Function }
 
-  constructor(serverless: Serverless.Instance, options: Serverless.Options) {
+  constructor(serverless: Serverless.Instance, options: any) {
+    if (!options.copyDependencies) {
+      options.copyDependencies = true;
+    }
+
     this.serverless = serverless
     this.options = options
 
@@ -42,7 +46,7 @@ export class TypeScriptPlugin {
       'before:package:createDeploymentArtifacts': async () => {
         await this.compileTs()
         await this.copyExtras()
-        await this.copyDependencies(true)
+        await this.copyDependencies(true, options.copyDependencies)
       },
       'after:package:createDeploymentArtifacts': async () => {
         await this.cleanup()
@@ -50,7 +54,7 @@ export class TypeScriptPlugin {
       'before:deploy:function:packageFunction': async () => {
         await this.compileTs()
         await this.copyExtras()
-        await this.copyDependencies(true)
+        await this.copyDependencies(true, options.copyDependencies)
       },
       'after:deploy:function:packageFunction': async () => {
         await this.cleanup()
@@ -185,7 +189,7 @@ export class TypeScriptPlugin {
    * directory.
    * @param isPackaging Provided if serverless is packaging the service for deployment
    */
-  async copyDependencies(isPackaging = false) {
+  async copyDependencies(isPackaging = false, copyDeps = true) {
     const outPkgPath = path.resolve(path.join(BUILD_FOLDER, 'package.json'))
     const outModulesPath = path.resolve(path.join(BUILD_FOLDER, 'node_modules'))
 
@@ -195,10 +199,15 @@ export class TypeScriptPlugin {
         fs.unlinkSync(outModulesPath)
       }
 
-      fs.copySync(
-        path.resolve('node_modules'),
-        path.resolve(path.join(BUILD_FOLDER, 'node_modules'))
-      )
+      if (copyDeps) {
+        console.log("Copying dependencies...")
+        fs.copySync(
+          path.resolve('node_modules'),
+          path.resolve(path.join(BUILD_FOLDER, 'node_modules'))
+        )
+      } else {
+        console.log("Will NOT copy dependencies")
+      }
     } else {
       if (!fs.existsSync(outModulesPath)) {
         await this.linkOrCopy(path.resolve('node_modules'), outModulesPath, 'junction')
