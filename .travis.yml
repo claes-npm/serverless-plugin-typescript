@@ -1,16 +1,17 @@
+os: linux
 language: node_js
 node_js:
  - stable
  - lts/*
-script:
-  - yarn run lint
-  - yarn run test
-defore_deploy:
-  - yarn run build
-deploy:
-  provider: npm
-  email: "$NPM_EMAIL"
-  api_key: "$NPM_API_TOKEN"
-  skip_cleanup: true
-  on:
-    branch: master
+jobs:
+  include:
+    - stage: npm release
+      script:
+        - yarn run lint
+        - yarn run test
+        deploy:
+          provider: npm
+          email: "$NPM_EMAIL"
+          api_token: "$NPM_API_TOKEN"
+          on:
+            branch: master
