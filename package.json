@@ -9,10 +9,9 @@
     "README.md"
   ],
   "scripts": {
-    "prepublish": "yarn run build",
-    "precommit": "yarn run test",
+    "precommit": "npm run test",
     "build": "rimraf dist && tsc",
-    "pretest": "yarn run lint",
+    "pretest": "npm run lint",
     "test": "jest",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },

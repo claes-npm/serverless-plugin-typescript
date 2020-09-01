@@ -1,18 +1,14 @@
-os: linux
-dist: xenial
 language: node_js
 node_js:
- - stable
- - lts/*
-jobs:
-  include:
-    - stage: release
-      script:
-        - yarn run lint
-        - yarn run test
-      deploy:
-        provider: npm
-        email: "$NPM_EMAIL"
-        api_token: "$NPM_API_TOKEN"
-        on:
-          branch: master
+  - '12'
+
+after_success:
+  - npm i -g semantic-release
+  - semantic-release
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
+
+notifications:
+  email: false
