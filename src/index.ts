@@ -19,7 +19,7 @@ export class TypeScriptPlugin {
 
   constructor(serverless: Serverless.Instance, options: any) {
     if (!options.copyDependencies) {
-      options.copyDependencies = true;
+      options.copyDependencies = true
     }
 
     this.serverless = serverless
@@ -200,13 +200,13 @@ export class TypeScriptPlugin {
       }
 
       if (copyDeps) {
-        console.log("Copying dependencies...")
+        console.log('Copying dependencies...')
         fs.copySync(
           path.resolve('node_modules'),
           path.resolve(path.join(BUILD_FOLDER, 'node_modules'))
         )
       } else {
-        console.log("Will NOT copy dependencies")
+        console.log('Will NOT copy dependencies')
       }
     } else {
       if (!fs.existsSync(outModulesPath)) {
