@@ -3,10 +3,10 @@ node_js:
  - stable
  - lts/*
 script:
-  - npm run lint
-  - npm run test
+  - yarn run lint
+  - yarn run test
 defore_deploy:
-  - npm run build
+  - yarn run build
 deploy:
   provider: npm
   email: "$NPM_EMAIL"
