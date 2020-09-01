@@ -9,11 +9,11 @@
 
 The only change in this forked version is the option to skip the dependency copy (node_modules folder being copied to the build folder).
 
-This is done by adding the argument `--copyDependencies false` to the sls deploy or package command.
+This is done by adding the argument `--doNotCopyDependencies` to the sls deploy or package command.
 
 E.g.
 ```
-serverless package --package .package --copyDependencies false
+serverless package --package .package --doNotCopyDependencies
 ```
 
 ## Features

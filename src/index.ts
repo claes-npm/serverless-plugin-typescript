@@ -18,11 +18,7 @@ export class TypeScriptPlugin {
   hooks: { [key: string]: Function }
 
   constructor(serverless: Serverless.Instance, options: any) {
-    if (!options.copyDependencies) {
-      options.copyDependencies = true
-    }
-
-    this.serverless = serverless
+     this.serverless = serverless
     this.options = options
 
     this.hooks = {
@@ -46,7 +42,7 @@ export class TypeScriptPlugin {
       'before:package:createDeploymentArtifacts': async () => {
         await this.compileTs()
         await this.copyExtras()
-        await this.copyDependencies(true, options.copyDependencies)
+        await this.copyDependencies(true, options.doNotCopyDependencies)
       },
       'after:package:createDeploymentArtifacts': async () => {
         await this.cleanup()
@@ -54,7 +50,7 @@ export class TypeScriptPlugin {
       'before:deploy:function:packageFunction': async () => {
         await this.compileTs()
         await this.copyExtras()
-        await this.copyDependencies(true, options.copyDependencies)
+        await this.copyDependencies(true, options.doNotCopyDependencies)
       },
       'after:deploy:function:packageFunction': async () => {
         await this.cleanup()
@@ -189,7 +185,7 @@ export class TypeScriptPlugin {
    * directory.
    * @param isPackaging Provided if serverless is packaging the service for deployment
    */
-  async copyDependencies(isPackaging = false, copyDeps = true) {
+  async copyDependencies(isPackaging = false, doNotCopyDependencies = false) {
     const outPkgPath = path.resolve(path.join(BUILD_FOLDER, 'package.json'))
     const outModulesPath = path.resolve(path.join(BUILD_FOLDER, 'node_modules'))
 
@@ -199,7 +195,7 @@ export class TypeScriptPlugin {
         fs.unlinkSync(outModulesPath)
       }
 
-      if (copyDeps) {
+      if (!doNotCopyDependencies) {
         console.log('Copying dependencies...')
         fs.copySync(
           path.resolve('node_modules'),
