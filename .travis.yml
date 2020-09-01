@@ -1,15 +1,15 @@
+os: linux
 language: node_js
 node_js:
-  - '12'
-  - '10'
-
-after_success:
-  - npm i -g semantic-release
-  - semantic-release
-
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
-
-notifications:
-  email: false
+ - stable
+ - lts/*
+cache:
+    directories:
+      - node_modules
+jobs:
+  include:
+    - stage: release
+      script:
+        - yarn test
+      after_success:
+        - yarn semantic-release
