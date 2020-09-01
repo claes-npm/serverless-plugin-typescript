@@ -9,7 +9,8 @@ jobs:
       script:
         - yarn run lint
         - yarn run test
-        deploy:
-          provider: npm
-          email: "$NPM_EMAIL"
-          api_token: "$NPM_API_TOKEN"
+      deploy:
+        provider: npm
+        email: "$NPM_EMAIL"
+        api_token: "$NPM_API_TOKEN"
+          branch: master
