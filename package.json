@@ -53,5 +53,8 @@
       "tsx",
       "js"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
