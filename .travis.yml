@@ -5,7 +5,7 @@ node_js:
  - lts/*
 jobs:
   include:
-    - stage: npm release
+    - stage: release
       script:
         - yarn run lint
         - yarn run test
@@ -13,5 +13,3 @@ jobs:
           provider: npm
           email: "$NPM_EMAIL"
           api_token: "$NPM_API_TOKEN"
-          on:
-            branch: master
